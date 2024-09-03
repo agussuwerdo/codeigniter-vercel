@@ -19,10 +19,14 @@ node_modules/
 # Ignore Mac OS files
 .DS_Store
 
-# Ignore log files
-*.log
+# Ignore apache logs
+apache/logs/**
 
-# Ignore composer generated files (if using composer)
+# Ignore all files in src/application/logs directories
+src/application/logs/**
+!src/application/logs/**/index.html
+
+# Ignore generated composer files
 /src/vendor/
 /src/composer.lock
 
