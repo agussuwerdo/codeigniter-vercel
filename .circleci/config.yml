@@ -11,11 +11,11 @@ jobs:
           command: cd src && composer install
       - run:
           name: Install Vercel CLI Locally
-          command: npm install -g vercel
+          command: npm install vercel
       - run:
           name: Deploy to Vercel
           command: |
-            vercel --prod src --yes --token $VERCEL_TOKEN \
+            npx vercel --prod src --yes --token $VERCEL_TOKEN \
             --env VERCEL_PROJECT_ID=$VERCEL_PROJECT_ID \
             --env VERCEL_ORG_ID=$VERCEL_ORG_ID
 workflows:
