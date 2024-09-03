@@ -1,7 +1,7 @@
+
 # CodeIgniter Vercel App
 
 ## Table of Contents
-
 - [Overview](#overview)
 - [Live Site](#live-site)
 - [Features](#features)
@@ -169,18 +169,15 @@ Configure `vercel.json` as follows:
 
 ```json
 {
-  "version": 2,
-  "builds": [
-    { "src": "api/*.php", "use": "vercel-php@0.7.1" },
-    { "src": "/user_guide/**", "use": "@vercel/static" }
-  ],
-  "routes": [
-    { "src": "/(.*)", "dest": "/api/index.php" },
-    { "src": "/user_guide/(.*)", "dest": "/user_guide/$1/$2/" }
-  ]
+	"version": 2,
+	"builds": [
+		{ "src": "api/*.php", "use": "vercel-php@0.7.1" }
+	],
+    "routes": [
+		{ "src": "/(.*)", "dest": "/api/index.php" }
+	]
 }
 ```
-
 This configuration will ensure that all your PHP files under api/ are deployed and processed correctly, and all incoming requests are routed to api/index.php
 
 Deploy to Vercel
