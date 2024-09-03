@@ -11,7 +11,7 @@ jobs:
           command: cd src && composer install
       - run:
           name: Install Vercel CLI Locally
-          command: npm install vercel
+          command: npm install -g vercel
       - run:
           name: Deploy to Vercel
           command: |
