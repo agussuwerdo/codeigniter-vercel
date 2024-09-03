@@ -1,4 +1,3 @@
-version: '3.8'
 volumes:
   codeigniter-db-data:
 services:
