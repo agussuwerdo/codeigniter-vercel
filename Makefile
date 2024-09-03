@@ -26,6 +26,14 @@ composer-install:
 composer-update:
 	$(DOCKER_COMPOSE) exec $(PHP_CONTAINER) composer update
 
+# Run migrations
+migrate:
+	$(DOCKER_COMPOSE) exec $(PHP_CONTAINER) php index.php migrate
+
+# Generate a new migration
+generate-migration:
+	./generate_migration.sh $(name)
+
 # View logs
 logs:
 	$(DOCKER_COMPOSE) logs -f
@@ -45,6 +53,8 @@ help:
 	@echo "  shell             Access the PHP container's shell"
 	@echo "  composer-install  Run 'composer install' inside the PHP container"
 	@echo "  composer-update   Run 'composer update' inside the PHP container"
+	@echo "  migrate           Run migrations inside the PHP container"
+	@echo "  generate-migration Generate a new migration file with a timestamp"
 	@echo "  logs              View logs from Docker containers"
 	@echo "  restart           Restart Docker containers"
 	@echo "  postgres-shell    Access the PostgreSQL container's shell"
