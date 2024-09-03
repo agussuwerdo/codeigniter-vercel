@@ -1,0 +1,25 @@
+version: 2.1
+
+jobs:
+  deploy:
+    docker:
+      - image: circleci/php:7.4-apache-node
+    steps:
+      - checkout
+      - run:
+          name: Install Composer Dependencies
+          command: composer install
+      - run:
+          name: Install Vercel CLI Locally
+          command: npm install vercel
+      - run:
+          name: Deploy to Vercel
+          command: |
+            vercel --token $VERCEL_TOKEN --prod --yes \
+            --env VERCEL_PROJECT_ID=$VERCEL_PROJECT_ID \
+            --env VERCEL_ORG_ID=$VERCEL_ORG_ID
+workflows:
+  version: 2
+  deploy:
+    jobs:
+      - deploy
