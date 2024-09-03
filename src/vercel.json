@@ -6,6 +6,8 @@
   },
   "routes": [
     { "src": "/(.*\\.html)$", "dest": "/$1" },
+    { "src": "/apidoc/(.*)", "dest": "/apidoc/$1" },
+    { "src": "/user_guide/(.*)", "dest": "/user_guide/$1/$2" },
     { "src": "/(.*)", "dest": "/api/index.php" }
   ]
 }
