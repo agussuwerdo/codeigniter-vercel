@@ -1,0 +1,30 @@
+version: '3.8'
+volumes:
+  codeigniter-db-data:
+services:
+  codeigniter_vercel_postgres:
+    image: postgres:15
+    restart: no
+    container_name: codeigniter_vercel_db
+    env_file:
+      - .env
+    volumes:
+      - ./codeigniter-db-data:/var/lib/postgresql/data
+    ports:
+      - "5433:5432"
+
+  codeigniter_vercel_app:
+    build:
+      context: .
+      dockerfile: apache/Dockerfile
+    image: php:7.4-apache
+    container_name: codeigniter_vercel_php
+    volumes:
+      - ./src:/var/www/html
+      - ./apache/logs:/var/log/apache2
+    ports:
+      - "8081:80"
+    depends_on:
+      - codeigniter_vercel_postgres
+    env_file:
+      - .env

@@ -1,0 +1,30 @@
+# ignore postgresql db data
+codeigniter-db-data
+
+# Ignore .env file and environment-specific configuration
+.env
+
+# Ignore Composer's vendor directory
+/vendor/
+
+# Ignore node_modules directory (if you're using Node.js for anything)
+node_modules/
+
+# Ignore CodeIgniter's cache directory
+/src/application/cache/*
+
+# Ignore logs directory
+/src/application/logs/*
+
+# Ignore Mac OS files
+.DS_Store
+
+# Ignore log files
+*.log
+
+# Ignore composer generated files (if using composer)
+/src/vendor/
+/src/composer.lock
+
+# vercel
+/src/.vercel
