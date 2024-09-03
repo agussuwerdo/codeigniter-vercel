@@ -1,9 +1,11 @@
 {
-	"version": 2,
-	"builds": [
-		{ "src": "api/*.php", "use": "vercel-php@0.7.1" }
-	],
-    "routes": [
-		{ "src": "/(.*)", "dest": "/api/index.php" }
-	]
+  "version": 2,
+  "builds": [
+    { "src": "api/*.php", "use": "vercel-php@0.7.1" },
+    { "src": "/user_guide/**", "use": "@vercel/static" }
+  ],
+  "routes": [
+    { "src": "/(.*)", "dest": "/api/index.php" },
+    { "src": "/user_guide/(.*)", "dest": "/user_guide/$1/$2/" }
+  ]
 }
