@@ -110,7 +110,13 @@ make composer-update
 ### Run Add migration
 
 ```bash
-make generate-migration name=add-users-table
+make migration name=add-users-table
+```
+
+### Run Add (controller|model)
+
+```bash
+make (controller|model) module=product name=product
 ```
 
 ### Migrate to the latest

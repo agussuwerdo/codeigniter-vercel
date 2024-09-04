@@ -117,6 +117,16 @@ if [ -z "$class_name" ]; then
   module_name="$class_name"
 fi
 
+if [ -z "$module_name" ]; then
+  echo "Usage: $module_name <module> is empty"
+  exit 1
+fi
+
+if [ -z "$class_name" ]; then
+  echo "Usage: $class_name <name> is empty"
+  exit 1
+fi
+
 case $command in
   make:controller)
     create_controller "$module_name" "$class_name"
