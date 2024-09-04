@@ -22,24 +22,25 @@ jobs:
             - src/vendor
           key: composer-v1-{{ checksum "src/composer.lock" }}
 
-      # Install Vercel CLI globally to avoid repeated local installation
+      # Install Vercel CLI Locally in the src directory
       - run:
-          name: Install Vercel CLI Globally
-          command: npm install -g vercel
+          name: Install Vercel CLI Locally
+          command: cd src && npm install vercel
 
       - run:
           name: Deploy to Vercel
           command: |
+            cd src
             if [ "$CIRCLE_BRANCH" == "main" ] || [ "$CIRCLE_BRANCH" == "master" ]; then
-              vercel --prod src --yes --token $VERCEL_TOKEN \
+              npx vercel --prod . --yes --token $VERCEL_TOKEN \
               --env VERCEL_PROJECT_ID=$VERCEL_PROJECT_ID \
               --env VERCEL_ORG_ID=$VERCEL_ORG_ID
             elif [ "$CIRCLE_BRANCH" == "dev" ]; then
-              vercel dev src --yes --token $VERCEL_TOKEN \
+              npx vercel dev . --yes --token $VERCEL_TOKEN \
               --env VERCEL_PROJECT_ID=$VERCEL_PROJECT_ID \
               --env VERCEL_ORG_ID=$VERCEL_ORG_ID
             elif [ "$CIRCLE_BRANCH" == "preview" ]; then
-              vercel src --yes --token $VERCEL_TOKEN \
+              npx vercel . --yes --token $VERCEL_TOKEN \
               --env VERCEL_PROJECT_ID=$VERCEL_PROJECT_ID \
               --env VERCEL_ORG_ID=$VERCEL_ORG_ID
             fi
