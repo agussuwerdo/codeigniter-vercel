@@ -20,7 +20,7 @@ class Migrate extends CI_Controller
     if ($this->migration->version($latest_version) === FALSE) {
       show_error($this->migration->error_string());
     } else {
-      echo 'Migration to the latest version completed successfully!';
+      echo 'Migration to the latest version ('.$latest_version.') completed successfully!';
     }
   }
 
