@@ -6,25 +6,40 @@ jobs:
       - image: circleci/php:7.4-apache-node
     steps:
       - checkout
+
+      # Cache Composer dependencies
+      - restore_cache:
+          keys:
+            - composer-v1-{{ checksum "src/composer.lock" }}
+            - composer-v1-
+
       - run:
           name: Install Composer Dependencies
-          command: cd src && composer install
+          command: cd src && composer install --no-interaction --prefer-dist
+
+      - save_cache:
+          paths:
+            - src/vendor
+          key: composer-v1-{{ checksum "src/composer.lock" }}
+
+      # Install Vercel CLI globally to avoid repeated local installation
       - run:
-          name: Install Vercel CLI Locally
-          command: npm install vercel
+          name: Install Vercel CLI Globally
+          command: npm install -g vercel
+
       - run:
           name: Deploy to Vercel
           command: |
             if [ "$CIRCLE_BRANCH" == "main" ] || [ "$CIRCLE_BRANCH" == "master" ]; then
-              npx vercel --prod src --yes --token $VERCEL_TOKEN \
+              vercel --prod src --yes --token $VERCEL_TOKEN \
               --env VERCEL_PROJECT_ID=$VERCEL_PROJECT_ID \
               --env VERCEL_ORG_ID=$VERCEL_ORG_ID
             elif [ "$CIRCLE_BRANCH" == "dev" ]; then
-              npx vercel dev src --yes --token $VERCEL_TOKEN \
+              vercel dev src --yes --token $VERCEL_TOKEN \
               --env VERCEL_PROJECT_ID=$VERCEL_PROJECT_ID \
               --env VERCEL_ORG_ID=$VERCEL_ORG_ID
             elif [ "$CIRCLE_BRANCH" == "preview" ]; then
-              npx vercel src --yes --token $VERCEL_TOKEN \
+              vercel src --yes --token $VERCEL_TOKEN \
               --env VERCEL_PROJECT_ID=$VERCEL_PROJECT_ID \
               --env VERCEL_ORG_ID=$VERCEL_ORG_ID
             fi
