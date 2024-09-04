@@ -28,7 +28,6 @@ src/application/logs/**
 
 # Ignore generated composer files
 /src/vendor/
-/src/composer.lock
 
 # vercel
 /src/.vercel
