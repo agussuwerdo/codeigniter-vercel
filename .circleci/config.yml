@@ -3,7 +3,7 @@ version: 2.1
 jobs:
   deploy:
     docker:
-      - image: circleci/php:7.4-apache-node
+      - image: agussuwerdo/circleci-php:latest
     steps:
       - checkout
 
