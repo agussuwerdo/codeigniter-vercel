@@ -56,9 +56,12 @@ $route['translate_uri_dashes'] = FALSE;
 $route['logs'] = 'hook/view_logs';
 $route['hook/get_logs'] = 'hook/get_logs';
 $route['hook/clear_logs'] = 'hook/clear_logs';
-// Place this AFTER the default routes but BEFORE any other specific routes
+
+$route['iclock'] = 'iclock/index';
+$route['iclock/(:any)'] = 'iclock/$1';
+$route['iclock/(:any)/(:any)'] = 'iclock/$1/$2';
+$route['iclock/(:any)/(:any)/(:any)'] = 'iclock/$1/$2/$3';
 
 $route['(:any)'] = 'hook/index/$1';
-// If you want to catch even deeper paths like example.com/path1/path2/path3
 $route['(:any)/(:any)'] = 'hook/index/$1/$2';
 $route['(:any)/(:any)/(:any)'] = 'hook/index/$1/$2/$3';

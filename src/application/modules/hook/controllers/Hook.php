@@ -10,6 +10,7 @@ class Hook extends CI_Controller
   public function __construct()
   {
     parent::__construct();
+    $this->load->helper('logger');
     // Get environment variables
     $this->redis_url = getenv('REDIS_URL') ?: "";
     $this->auth_token = getenv('REDIS_AUTH_TOKEN') ?: "";
@@ -17,59 +18,8 @@ class Hook extends CI_Controller
 
   public function index()
   {
-    $this->log_user_access();
-  }
-
-  function log_user_access()
-  {
-    $CI = &get_instance();
-
-    // Get request details
-    $request_time = microtime(true);
-    $method = $_SERVER['REQUEST_METHOD'];
-    $uri = $CI->uri->uri_string();
-    $query = $_SERVER['QUERY_STRING'];
-    $payload = file_get_contents('php://input');
-    $ip = $CI->input->ip_address();
-
-    // Get response details
-    $status_code = http_response_code();
-    $response_time = microtime(true) - $request_time;
-
-    // Prepare data for Redis
-    $log_data = json_encode([
-      'timestamp' => date('Y-m-d H:i:s'),
-      'method' => $method,
-      'uri' => $uri,
-      'query' => $query,
-      'payload' => $payload,
-      'status_code' => $status_code,
-      'ip' => $ip,
-      'request_time' => date('Y-m-d H:i:s', (int)$request_time),
-      'response_time' => round($response_time * 1000, 2) // in milliseconds
-    ]);
-
-    // Call Upstash Redis
-    $redis_url = $this->redis_url;
-    $auth_token = $this->auth_token;
-
-    // Generate unique key for the log entry
-    $key = "request_log:" . uniqid();
-
-    $ch = curl_init();
-    curl_setopt($ch, CURLOPT_URL, $redis_url . "/set/" . $key . "/" . urlencode($log_data));
-    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-    curl_setopt($ch, CURLOPT_HTTPHEADER, [
-      "Authorization: Bearer " . $auth_token
-    ]);
-
-    $result = curl_exec($ch);
-    curl_close($ch);
-    if ($uri) {
-      echo $result;
-    } else {
-      $this->load->view('welcome_message');
-    }
+    log_user_access("welcome page");
+    $this->load->view('welcome_message');
   }
 
   function view_logs()

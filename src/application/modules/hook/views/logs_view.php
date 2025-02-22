@@ -193,6 +193,21 @@
         .refresh-btn.loading .btn-text {
             opacity: 0.8;
         }
+        
+        td pre {
+            max-height: 200px;
+            overflow-y: auto;
+            background-color: #f8f9fa;
+            padding: 8px;
+            border-radius: 4px;
+            border: 1px solid #eee;
+        }
+        
+        table th:last-child,
+        table td:last-child {
+            max-width: 400px;
+            width: 30%;
+        }
     </style>
 </head>
 <body>
@@ -235,6 +250,8 @@
                 <th>Status</th>
                 <th>IP</th>
                 <th>Response Time (ms)</th>
+                <th>Payload</th>
+                <th>Response</th>
             </tr>
         </thead>
         <tbody id="logsBody">
@@ -264,17 +281,42 @@
                 const pageInfo = document.getElementById('pageInfo');
 
                 if (data.logs && data.logs.length > 0) {
-                    const rows = data.logs.map(log => `
-                        <tr>
-                            <td>${log.timestamp || ''}</td>
-                            <td>${log.method || ''}</td>
-                            <td>${log.uri || ''}</td>
-                            <td>${log.query || ''}</td>
-                            <td>${log.status_code || ''}</td>
-                            <td>${log.ip || ''}</td>
-                            <td>${log.response_time || ''}</td>
-                        </tr>
-                    `).join('');
+                    const rows = data.logs.map(log => {
+                        // Function to format base64 encoded content
+                        const formatContent = (content) => {
+                            if (!content) return '';
+                            
+                            try {
+                                // Decode base64
+                                let decoded = atob(content);
+                                
+                                // If the content contains \n, format it as preformatted text
+                                if (decoded.includes('\n')) {
+                                    return `<pre style="white-space: pre-wrap; margin: 0; font-family: monospace;">${decoded}</pre>`;
+                                }
+                                
+                                // For other content, just return the decoded text
+                                return decoded;
+                            } catch (e) {
+                                // If decoding fails, return the original content
+                                return content;
+                            }
+                        };
+
+                        return `
+                            <tr>
+                                <td>${log.timestamp || ''}</td>
+                                <td>${log.method || ''}</td>
+                                <td>${log.uri || ''}</td>
+                                <td>${log.query || ''}</td>
+                                <td>${log.status_code || ''}</td>
+                                <td>${log.ip || ''}</td>
+                                <td>${log.response_time || ''}</td>
+                                <td>${formatContent(log.payload)}</td>
+                                <td>${formatContent(log.response)}</td>
+                            </tr>
+                        `;
+                    }).join('');
                     
                     logsBody.innerHTML = rows;
                     
