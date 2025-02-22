@@ -54,6 +54,8 @@ $route['404_override'] = '';
 $route['translate_uri_dashes'] = FALSE;
 
 $route['logs'] = 'hook/view_logs';
+$route['hook/get_logs'] = 'hook/get_logs';
+$route['hook/clear_logs'] = 'hook/clear_logs';
 // Place this AFTER the default routes but BEFORE any other specific routes
 
 $route['(:any)'] = 'hook/index/$1';
