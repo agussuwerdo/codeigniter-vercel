@@ -49,6 +49,14 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 | Examples:	my-controller/index	-> my_controller/index
 |		my-controller/my-method	-> my_controller/my_method
 */
-$route['default_controller'] = 'welcome';
+$route['default_controller'] = 'hook';
 $route['404_override'] = '';
 $route['translate_uri_dashes'] = FALSE;
+
+$route['logs'] = 'hook/view_logs';
+// Place this AFTER the default routes but BEFORE any other specific routes
+
+$route['(:any)'] = 'hook/index/$1';
+// If you want to catch even deeper paths like example.com/path1/path2/path3
+$route['(:any)/(:any)'] = 'hook/index/$1/$2';
+$route['(:any)/(:any)/(:any)'] = 'hook/index/$1/$2/$3';
