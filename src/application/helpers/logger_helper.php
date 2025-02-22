@@ -2,6 +2,11 @@
 defined('BASEPATH') or exit('No direct script access allowed');
 
 function log_user_access($response = null) {
+    $enabled = getenv('LOG_USER_ACCESS') ?: false;
+    if (!$enabled) {
+        return;
+    }
+
     $CI = &get_instance();
 
     // Get request details
